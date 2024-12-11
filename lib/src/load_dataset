@@ -1,0 +1,94 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:developer';
+
+// Model classes (Add your Menu, Category, and related models here)
+
+class Menu {
+  String id;
+  String title;
+
+  Menu({
+    required this.id,
+    required this.title,
+  });
+
+  factory Menu.fromJson(Map<String, dynamic> json) {
+    return Menu(
+      id: json['ID'],
+      title: json['Title']['en'],
+    );
+  }
+}
+
+class Category {
+  String id;
+  String title;
+
+  Category({
+    required this.id,
+    required this.title,
+  });
+
+  factory Category.fromJson(Map<String, dynamic> json) {
+    return Category(
+      id: json['ID'],
+      title: json['Title']['en'],
+    );
+  }
+}
+
+// JSON Loader Class
+class JSONLoader {
+  final String filePath;
+
+  JSONLoader(this.filePath);
+
+  Future<String> _readFile() async {
+    log('Reading file: $filePath', name: 'JSONLoader');
+    final file = File(filePath);
+    if (await file.exists()) {
+      return await file.readAsString();
+    } else {
+      log('File not found: $filePath', level: 1000, name: 'JSONLoader');
+      throw Exception('File not found: $filePath');
+    }
+  }
+
+  Future<Map<String, dynamic>> _parseJson() async {
+    try {
+      final jsonData = await _readFile();
+      log('Parsing JSON data from file.', name: 'JSONLoader');
+      return json.decode(jsonData) as Map<String, dynamic>;
+    } catch (e) {
+      log('Error parsing JSON: $e', level: 1000, name: 'JSONLoader');
+      rethrow;
+    }
+  }
+
+  Future<List<Menu>> loadMenus() async {
+    try {
+      final jsonData = await _parseJson();
+      log('Loading menus.', name: 'JSONLoader');
+      return (jsonData['Result']['Menu'] as List)
+          .map((menuJson) => Menu.fromJson(menuJson))
+          .toList();
+    } catch (e) {
+      log('Error loading menus: $e', level: 1000, name: 'JSONLoader');
+      rethrow;
+    }
+  }
+
+  Future<List<Category>> loadCategories() async {
+    try {
+      final jsonData = await _parseJson();
+      log('Loading categories.', name: 'JSONLoader');
+      return (jsonData['Result']['Categories'] as List)
+          .map((categoryJson) => Category.fromJson(categoryJson))
+          .toList();
+    } catch (e) {
+      log('Error loading categories: $e', level: 1000, name: 'JSONLoader');
+      rethrow;
+    }
+  }
+}
