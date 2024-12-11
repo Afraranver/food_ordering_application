@@ -31,4 +31,5 @@ flutter:
     # Add assets from the images directory to the application.
     - assets/images/
     - assets/menu_data.json
+    - assets/images/background.jpg
 
