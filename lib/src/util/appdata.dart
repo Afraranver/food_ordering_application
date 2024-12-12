@@ -1,6 +1,8 @@
+import 'package:food_ordering_application/src/models/item.dart';
 import 'package:food_ordering_application/src/models/model.dart';
 import 'dart:developer';
 import 'dart:io';
+import 'package:intl/intl.dart';
 
 class AppData {
   static final AppData _instance = AppData._internal();
@@ -13,7 +15,10 @@ class AppData {
   List<Category> categories = [];
   List<Item> items = [];
   List<ModifierGroups> modifierGroups = [];
-
+  String today = "";
+  TimeRange? todayTimeRange;
+  List<Category> displayedCategories = [];
+  String selectedCategory = "";
   bool _isLoaded = false;
 
   Future<void> loadData() async {
@@ -27,8 +32,24 @@ class AppData {
     modifierGroups = await loader.loadModifierGroups();
     _isLoaded = true;
 
+    // Get today's day (e.g., 'Monday', 'Tuesday', etc.)
+    today = DateFormat('EEEE').format(DateTime.now());
+
     if (menus.isNotEmpty) {
       selectedMenu = menus.first.title;
+
+      // Get the time range for today's day from the menu's availability
+      for (var menuItem in menus) {
+        // Access the menuAvailability for today
+        todayTimeRange = menuItem.menuAvailability[today];
+
+        // You can now use todayTimeRange for displaying time range for today's menu item
+        if (todayTimeRange != null) {
+          log('Menu: ${menuItem.title}');
+          log('Available today: ${todayTimeRange?.startTime} - ${todayTimeRange?.endTime}');
+        }
+      }
+
     }
 
     try {
@@ -56,7 +77,6 @@ class AppData {
       for (var modifer in modifierGroups) {
         log('ModifierGroup: ${modifer.title}', name: 'Main');
       }
-
     } catch (e) {
       log('Error: $e', level: 1000, name: 'Main');
     }

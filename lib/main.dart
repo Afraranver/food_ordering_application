@@ -13,4 +13,5 @@ void main() async {
 
   // Load data once when the app starts
   await AppData().loadData();
+  
 }

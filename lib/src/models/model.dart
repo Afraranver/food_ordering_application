@@ -1,56 +1,111 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/services.dart';
+import 'package:food_ordering_application/src/models/item.dart';
+import 'package:food_ordering_application/src/util/appdata.dart';
 
 // Model classes (Add your Menu, Category, and related models here)
 
 class Menu {
   String id;
   String title;
+  Map<String, TimeRange> menuAvailability;
+  List<String> menuCategoryIDs;
 
   Menu({
     required this.id,
     required this.title,
+    required this.menuAvailability,
+    required this.menuCategoryIDs,
   });
 
   factory Menu.fromJson(Map<String, dynamic> json) {
     return Menu(
       id: json['ID'],
       title: json['Title']['en'],
+      menuAvailability: (json['MenuAvailability'] as Map<String, dynamic>)
+          .map((key, value) => MapEntry(key, TimeRange.fromJson(value))),
+      menuCategoryIDs: List<String>.from(json['MenuCategoryIDs']),
+    );
+  }
+}
+
+class TimeRange {
+  String startTime;
+  String endTime;
+
+  TimeRange({
+    required this.startTime,
+    required this.endTime,
+  });
+
+  factory TimeRange.fromJson(Map<String, dynamic> json) {
+    return TimeRange(
+      startTime: json['StartTime'],
+      endTime: json['EndTime'],
     );
   }
 }
 
 class Category {
   String id;
+  String menuCategoryID;
+  String menuID;
+  String storeID;
   String title;
+  String? subTitle;
+  List<MenuEntity> menuEntities;
+  DateTime createdDate;
+  DateTime modifiedDate;
+  String createdBy;
+  String modifiedBy;
 
   Category({
     required this.id,
+    required this.menuCategoryID,
+    required this.menuID,
+    required this.storeID,
     required this.title,
+    this.subTitle,
+    required this.menuEntities,
+    required this.createdDate,
+    required this.modifiedDate,
+    required this.createdBy,
+    required this.modifiedBy,
   });
 
   factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
       id: json['ID'],
+      menuCategoryID: json['MenuCategoryID'],
+      menuID: json['MenuID'],
+      storeID: json['StoreID'],
       title: json['Title']['en'],
+      subTitle: json['SubTitle']['en'],
+      menuEntities: (json['MenuEntities'] as List<dynamic>)
+          .map((entity) => MenuEntity.fromJson(entity))
+          .toList(),
+      createdDate: DateTime.parse(json['CreatedDate']),
+      modifiedDate: DateTime.parse(json['ModifiedDate']),
+      createdBy: json['CreatedBy'],
+      modifiedBy: json['ModifiedBy'],
     );
   }
 }
 
-class Item {
+class MenuEntity {
   String id;
-  String title;
+  String type;
 
-  Item({
+  MenuEntity({
     required this.id,
-    required this.title,
+    required this.type,
   });
 
-  factory Item.fromJson(Map<String, dynamic> json) {
-    return Item(
+  factory MenuEntity.fromJson(Map<String, dynamic> json) {
+    return MenuEntity(
       id: json['ID'],
-      title: json['Title']['en'],
+      type: json['Type'],
     );
   }
 }
@@ -126,4 +181,34 @@ class JSONLoader {
         .map((modifierGroupsJson) => ModifierGroups.fromJson(modifierGroupsJson))
         .toList();
   }
+
+  List<Item> getItemsForSelectedCategory(String selectedCategory) {
+  // Assuming categories and items are available as part of AppData or similar structure
+  List<Item> items = [];
+  
+  // for (var category in AppData().displayedCategories) {
+  //   if (category.title == selectedCategory) {
+  //     // Extract the items from MenuEntities for this category
+  //     for (var menuEntity in category.menuEntities) {
+  //       // Assuming we have a method to get items based on MenuEntity ID
+  //       Item item = getMenuItemByID(menuEntity.id);
+  //       items.add(item);
+  //           }
+  //   }
+  // }
+
+  return items;
+}
+
+// Item getMenuItemByID(String menuItemID) {
+//   // Fetch menu item by ID from a pre-defined list of items or a database
+//   // For now, returning a dummy item.
+//   return Item(
+//     ID: menuItemID,
+//     title: 'Example Item',
+//     description: 'Description for $menuItemID',
+//     imageUrl: 'http://example.com/image.jpg',
+//     price: 19.99,
+//   );
+// }
 }
