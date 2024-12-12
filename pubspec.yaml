@@ -27,9 +27,17 @@ flutter:
   # Enable generation of localized Strings from arb files.
   generate: true
 
+  fonts:
+    - family: Urbanist
+      fonts:
+        - asset: assets/fonts/Urbanist_VariableFont_wght.ttf
+
   assets:
     # Add assets from the images directory to the application.
     - assets/images/
     - assets/menu_data.json
     - assets/images/background.jpg
+    - assets/images/bag.png
+    - assets/images/seated_person.png
+    - assets/images/delivery_scooter.png
 
