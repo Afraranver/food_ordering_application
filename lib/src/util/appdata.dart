@@ -8,10 +8,11 @@ class AppData {
 
   AppData._internal();
 
+  String selectedMenu = 'MEAL DEALS';
   List<Menu> menus = [];
   List<Category> categories = [];
   List<Item> items = [];
-    List<ModifierGroups> modifierGroups = [];
+  List<ModifierGroups> modifierGroups = [];
 
   bool _isLoaded = false;
 
@@ -25,6 +26,10 @@ class AppData {
     items = await loader.loadItems();
     modifierGroups = await loader.loadModifierGroups();
     _isLoaded = true;
+
+    if (menus.isNotEmpty) {
+      selectedMenu = menus.first.title;
+    }
 
     try {
       log('Current Directory: ${Directory.current.path}');
