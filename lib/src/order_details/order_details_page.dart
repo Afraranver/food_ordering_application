@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_ordering_application/src/models/item_model.dart';
+import 'package:food_ordering_application/src/util/helper.dart';
 
 class OrderDetails extends StatelessWidget {
   final Item item;
@@ -79,6 +80,8 @@ class OrderDetails extends StatelessWidget {
                                       fontWeight: FontWeight.w700,
                                       height: 36 / 32,
                                     ),
+                                    overflow: TextOverflow.ellipsis, // Add ellipsis when text overflows
+                                    maxLines: 1,
                                   ),
                                   const SizedBox(height: 4.0),
                                   Row(
@@ -135,84 +138,263 @@ class OrderDetails extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 16.0),
-                          Text(
-                            item.description, // Use the item's description
-                            style: const TextStyle(
-                              fontFamily: 'Urbanist',
-                              color: Color(0xFF434E58),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              height: 36 / 32,
-                            ),
-                          ),
-
-                          const SizedBox(height: 16.0),
-                          // Tabs for different sections (Ingredients, Nutritional, etc.)
-                          DefaultTabController(
-                            length: 4,
+                          SingleChildScrollView(
+                            // Wrap the entire content inside a scroll view
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Container to ensure no side margins
-                                Container(
-                                  width: double
-                                      .infinity, // Make sure it takes the full width
-                                  padding: EdgeInsets
-                                      .zero, // No padding around the TabBar
-                                  child: const TabBar(
-                                    labelColor: Color(
-                                        0xFF1CAE81), // Selected tab label color
-                                    unselectedLabelColor: Color(
-                                        0xFF171725), // Unselected tab label color
-                                    indicatorColor: Color(
-                                        0xFF1CAE81), // Color of the indicator (underline)
-                                    labelStyle: TextStyle(
-                                      fontFamily: 'Urbanist',
-                                      color: Color(0xFF434E58),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      height: 36 / 32,
-                                    ),
-                                    tabs: [
-                                      Tab(text: 'Ingredients'),
-                                      Tab(text: 'Nutritional'),
-                                      Tab(text: 'Instructions'),
-                                      Tab(text: 'Allergies'),
-                                    ],
+                                const SizedBox(height: 16.0),
+                                Text(
+                                  item.description, // Use the item's description
+                                  style: const TextStyle(
+                                    fontFamily: 'Urbanist',
+                                    color: Color(0xFF434E58),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    height: 36 / 32,
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 250.0, // Adjust according to content
-                                  child: TabBarView(
+                                const SizedBox(height: 16.0),
+
+                                // Tabs for different sections (Ingredients, Nutritional, etc.)
+                                DefaultTabController(
+                                  length: 4,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      // Ingredients Tab
-                                      Padding(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                      Container(
+                                        width: double
+                                            .infinity, // Full width for the TabBar
+                                        padding: EdgeInsets
+                                            .zero, // No padding around the TabBar
+                                        child: const TabBar(
+                                          labelColor: Color(
+                                              0xFF1CAE81), // Selected tab label color
+                                          unselectedLabelColor: Color(
+                                              0xFF171725), // Unselected tab label color
+                                          indicatorColor: Color(
+                                              0xFF1CAE81), // Color of the indicator (underline)
+                                          labelStyle: TextStyle(
+                                            fontFamily: 'Urbanist',
+                                            color: Color(0xFF434E58),
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500,
+                                            height: 36 / 32,
+                                          ),
+                                          tabs: [
+                                            Tab(text: 'Ingredients'),
+                                            Tab(text: 'Nutritional'),
+                                            Tab(text: 'Instructions'),
+                                            Tab(text: 'Allergies'),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8.0),
+                                      SizedBox(
+                                        height:
+                                            250.0, // Adjust according to content
+                                        child: TabBarView(
                                           children: [
-                                            const Chip(label: Text('Eggs')),
-                                            const Chip(label: Text('Milk')),
-                                            const Chip(label: Text('Mollusks')),
-                                            const Chip(label: Text('Mustard')),
-                                            const Chip(label: Text('Gluten')),
-                                            TextButton(
-                                              onPressed: () {},
-                                              child: const Text('See more'),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  if (item
+                                                      .dishInfo
+                                                      .classifications
+                                                      .ingredients
+                                                      .isNotEmpty)
+                                                    // If ingredients are present, show them in chips
+                                                    Wrap(
+                                                      spacing:
+                                                          8.0, // Adjust space between chips
+                                                      runSpacing:
+                                                          4.0, // Adjust space between lines of chips
+                                                      children: item
+                                                          .dishInfo
+                                                          .classifications
+                                                          .ingredients
+                                                          .map((ingredient) {
+                                                        return Chip(
+                                                          label: Center(
+                                                            child: Text(
+                                                                ingredient),
+                                                          ),
+                                                        );
+                                                      }).toList(),
+                                                    )
+                                                  else
+                                                    // If no ingredients, show an empty state message centered
+                                                    const Center(
+                                                      child: Text(
+                                                        'No ingredients listed.',
+                                                        style: TextStyle(
+                                                            fontSize: 16,
+                                                            color: Colors.grey),
+                                                      ),
+                                                    ),
+                                                  // 'See more' button with arrow
+                                                  TextButton(
+                                                    onPressed: () {},
+                                                    child: const Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center, // Center align the text and icon
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Center(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  const Align(
+                                                    alignment: Alignment
+                                                        .centerLeft, // Align text to the left
+                                                    child: Text(
+                                                      'Nutritional Info per 100g', // You can add a header if needed
+                                                      style: TextStyle(
+                                                        fontFamily: 'Urbanist',
+                                                        color:
+                                                            Color(0xFF171725),
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        height: 36 / 32,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                      height:
+                                                          10), // Adds spacing between the header and the row
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween, // Distribute space evenly
+                                                    children: [
+                                                      NutrientColumn(
+                                                          label: 'Kcal',
+                                                          value: item
+                                                              .nutrientData
+                                                              .calories
+                                                              .displayType
+                                                              .toString()),
+                                                      NutrientColumn(
+                                                          label: 'Proteins',
+                                                          value: item
+                                                              .nutrientData
+                                                              .calories
+                                                              .displayType
+                                                              .toString()),
+                                                      NutrientColumn(
+                                                          label: 'Fats',
+                                                          value: item
+                                                              .nutrientData
+                                                              .calories
+                                                              .displayType
+                                                              .toString()),
+                                                      NutrientColumn(
+                                                          label: 'Carbo H',
+                                                          value: item
+                                                              .nutrientData
+                                                              .calories
+                                                              .displayType
+                                                              .toString()),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  if (item
+                                                      .dishInfo
+                                                      .classifications
+                                                      .instructionsForUse
+                                                      .isNotEmpty)
+                                                    // If instructionsForUse is present, display it as text
+                                                    Text(
+                                                      item
+                                                          .dishInfo
+                                                          .classifications
+                                                          .instructionsForUse,
+                                                      style: const TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.black87,
+                                                        height:
+                                                            1.5, // Adjust line height
+                                                      ),
+                                                    )
+                                                  else
+                                                    // If no instructions, show an empty state message centered
+                                                    const Center(
+                                                      child: Text(
+                                                        'No instructions for use provided.',
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: Colors.grey,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  if (item.allergens.isNotEmpty)
+                                                    // If allergens are present, display them in a Wrap with chips
+                                                    Wrap(
+                                                      spacing:
+                                                          8.0, // Space between chips
+                                                      runSpacing:
+                                                          4.0, // Space between lines of chips
+                                                      children: item.allergens
+                                                          .map((allergen) {
+                                                        return Chip(
+                                                          label: Text(
+                                                            allergen,
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 14,
+                                                              color: Colors
+                                                                  .black87,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      }).toList(),
+                                                    )
+                                                  else
+                                                    // If no allergens, show an empty state message centered
+                                                    const Center(
+                                                      child: Text(
+                                                        'No allergens listed.',
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: Colors.grey,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                ],
+                                              ),
                                             ),
                                           ],
                                         ),
                                       ),
-                                      // Nutritional Tab
-                                      const Center(
-                                          child: Text('Nutritional Info here')),
-                                      // Instructions Tab
-                                      const Center(
-                                          child: Text('Instructions here')),
-                                      // Allergies Tab
-                                      const Center(
-                                          child: Text('Allergies info here')),
                                     ],
                                   ),
                                 ),

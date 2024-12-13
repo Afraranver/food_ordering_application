@@ -73,3 +73,34 @@ List<Item> getFilteredItems(Category category, List<Item> items) {
     return menuEntityIds.contains(item.menuItemId);
   }).toList();
 }
+
+class NutrientColumn extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const NutrientColumn({Key? key, required this.label, required this.value})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 14,
+            color: Colors.grey,
+          ),
+        ),
+      ],
+    );
+  }
+}

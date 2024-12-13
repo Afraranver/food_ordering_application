@@ -90,33 +90,35 @@ class MenuItemCard extends StatelessWidget {
                             child: Align(
                               alignment: Alignment
                                   .centerRight, // Align to the right side
-                              child: Container(
-                                constraints: const BoxConstraints(
-                                  maxWidth:
-                                      200, // Set a maximum width for the container
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 6,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFFFB200),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Text(
-                                  "${item.modifierGroupRules.ids!.length} Promotions Available",
-                                  style: const TextStyle(
-                                    fontFamily: 'DM Sans',
-                                    color: Color(0xFF141414),
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                    height: 36 / 32,
-                                  ),
-                                  overflow: TextOverflow
-                                      .ellipsis, // Add ellipsis when text overflows
-                                  maxLines: 1, // Limit to one line
-                                ),
-                              ),
+                              child: item.metaData.isDealProduct
+                                  ? Container(
+                                      constraints: const BoxConstraints(
+                                        maxWidth:
+                                            200, // Set a maximum width for the container
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                        vertical: 6,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFFFB200),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: const Text(
+                                        "1 Promotions Available",
+                                        style: TextStyle(
+                                          fontFamily: 'DM Sans',
+                                          color: Color(0xFF141414),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500,
+                                          height: 36 / 32,
+                                        ),
+                                        overflow: TextOverflow
+                                            .ellipsis, // Add ellipsis when text overflows
+                                        maxLines: 1, // Limit to one line
+                                      ),
+                                    )
+                                  : const SizedBox.shrink(),
                             ),
                           ),
                       ],
@@ -131,12 +133,12 @@ class MenuItemCard extends StatelessWidget {
     );
   }
 
-
   void navigateToOrderDetails(BuildContext context) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true, // Allows the modal to occupy full screen height
-      backgroundColor: Colors.transparent, // Makes the background transparent for rounded corners
+      backgroundColor: Colors
+          .transparent, // Makes the background transparent for rounded corners
       builder: (context) => OrderDetails(item: item), // Pass the item here
     );
   }
