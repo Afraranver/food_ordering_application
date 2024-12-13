@@ -1,5 +1,7 @@
+import 'package:food_ordering_application/src/models/category_model.dart';
 import 'package:food_ordering_application/src/models/item_model.dart';
-import 'package:food_ordering_application/src/models/model.dart';
+import 'package:food_ordering_application/src/models/menu_model.dart';
+import 'package:food_ordering_application/src/models/modifiergroup_model.dart';
 import 'dart:developer';
 import 'dart:io';
 import 'package:intl/intl.dart';
@@ -14,7 +16,7 @@ class AppData {
   List<Menu> menus = [];
   List<Category> categories = [];
   List<Item> items = [];
-  List<ModifierGroups> modifierGroups = [];
+  List<ModifierGroup> modifierGroups = [];
   String today = "";
   TimeRange? todayTimeRange;
   List<Category> displayedCategories = [];

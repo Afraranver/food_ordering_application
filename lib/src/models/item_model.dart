@@ -15,8 +15,8 @@ class Item {
   MetaData metaData;
   DishInfo dishInfo;
   NutrientData nutrientData;
-  List<String> allergens; 
-  int totalReviews; 
+  List<String> allergens;
+  int totalReviews;
 
   Item({
     required this.id,
@@ -35,8 +35,8 @@ class Item {
     required this.metaData,
     required this.dishInfo,
     required this.nutrientData,
-    required this.allergens,  
-    this.totalReviews = 0, 
+    required this.allergens,
+    this.totalReviews = 0,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) {
@@ -60,14 +60,33 @@ class Item {
       metaData: MetaData.fromJson(json['MetaData']),
       dishInfo: DishInfo.fromJson(json['DishInfo']),
       nutrientData: NutrientData.fromJson(json['NutrientData']),
-      allergens: json['Allergens'] != null
-          ? List<String>.from(json['Allergens'])  
-          : [],  
-      totalReviews:
-          json['TotalReviews'] ?? 0,
+      allergens:
+          json['Allergens'] != null ? List<String>.from(json['Allergens']) : [],
+      totalReviews: json['TotalReviews'] ?? 0,
     );
   }
 }
+
+Item defaultItem = Item(
+  id: '',
+  menuItemId: '',
+  storeId: '',
+  title: '',
+  description: '',
+  imageUrl: '',
+  priceInfo: PriceInfo.empty(),
+  quantityInfo: QuantityInfo.empty(),
+  suspensionRules: SuspensionRules.empty(),
+  modifierGroupRules: ModifierGroupRules.empty(),
+  rewardGroupRules: RewardGroupRules.empty(),
+  taxInfo: TaxInfo.empty(),
+  categoryIds: [],
+  metaData: MetaData.empty(),
+  dishInfo: DishInfo.empty(),
+  nutrientData: NutrientData.empty(),
+  allergens: [],
+  totalReviews: 0,
+);
 
 class PriceInfo {
   Price price;
@@ -86,6 +105,10 @@ class PriceInfo {
       corePrice: json['CorePrice'],
       containerDeposit: json['ContainerDeposit'],
     );
+  }
+
+  factory PriceInfo.empty() {
+    return PriceInfo(price: Price.empty(), corePrice: 0, containerDeposit: 0);
   }
 
   toStringAsFixed(int i) {}
@@ -109,6 +132,14 @@ class Price {
       tablePrice: json['TablePrice'],
     );
   }
+
+  factory Price.empty() {
+    return Price(
+      deliveryPrice: 0,
+      pickupPrice: 0,
+      tablePrice: 0,
+    );
+  }
 }
 
 class QuantityInfo {
@@ -122,6 +153,10 @@ class QuantityInfo {
     return QuantityInfo(
       quantity: Quantity.fromJson(json['Quantity']),
     );
+  }
+
+  factory QuantityInfo.empty() {
+    return QuantityInfo(quantity: Quantity.empty());
   }
 }
 
@@ -140,6 +175,10 @@ class Quantity {
       maxPermitted: json['MaxPermitted'],
     );
   }
+
+  factory Quantity.empty() {
+    return Quantity(minPermitted: 0, maxPermitted: 0);
+  }
 }
 
 class SuspensionRules {
@@ -152,6 +191,12 @@ class SuspensionRules {
   factory SuspensionRules.fromJson(Map<String, dynamic> json) {
     return SuspensionRules(
       suspension: Suspension.fromJson(json['Suspension']),
+    );
+  }
+
+  factory SuspensionRules.empty() {
+    return SuspensionRules(
+      suspension: Suspension.empty(),
     );
   }
 }
@@ -171,6 +216,13 @@ class Suspension {
       reason: json['Reason'],
     );
   }
+
+  factory Suspension.empty() {
+    return Suspension(
+      isSuspended: false,
+      reason: '',
+    );
+  }
 }
 
 class ModifierGroupRules {
@@ -188,6 +240,12 @@ class ModifierGroupRules {
 
   // Handle null case for isNotEmpty
   bool get isNotEmpty => ids != null && ids!.isNotEmpty;
+
+  factory ModifierGroupRules.empty() {
+    return ModifierGroupRules(
+      ids: [], // Default to an empty list
+    );
+  }
 }
 
 class RewardGroupRules {
@@ -200,6 +258,12 @@ class RewardGroupRules {
   factory RewardGroupRules.fromJson(Map<String, dynamic> json) {
     return RewardGroupRules(
       reward: Reward.fromJson(json['Reward']),
+    );
+  }
+
+  factory RewardGroupRules.empty() {
+    return RewardGroupRules(
+      reward: Reward.empty(), // Use the empty Reward object
     );
   }
 }
@@ -228,6 +292,16 @@ class Reward {
       isMultiplierRequired: json['IsMutiplierRequired'],
     );
   }
+
+  factory Reward.empty() {
+    return Reward(
+      type: '', // Default to an empty string
+      defaultValue: 0, // Default to 0
+      multiplierValue: 0, // Default to 0
+      customValue: 0, // Default to 0
+      isMultiplierRequired: false, // Default to false
+    );
+  }
 }
 
 class TaxInfo {
@@ -245,6 +319,13 @@ class TaxInfo {
       vatRateInPercentage: json['VATRateInPercentage'],
     );
   }
+
+  factory TaxInfo.empty() {
+    return TaxInfo(
+      taxRate: 0, // Default to 0
+      vatRateInPercentage: 0, // Default to 0
+    );
+  }
 }
 
 class NutrientData {
@@ -258,7 +339,6 @@ class NutrientData {
     required this.servingSize,
   });
 
-  // Factory constructor to create NutrientData from JSON
   factory NutrientData.fromJson(Map<String, dynamic> json) {
     return NutrientData(
       calories: Calories.fromJson(json['Calories']),
@@ -267,7 +347,15 @@ class NutrientData {
     );
   }
 
-  // Method to convert NutrientData object to a map
+  // Empty constructor
+  factory NutrientData.empty() {
+    return NutrientData(
+      calories: Calories.empty(),
+      kilojules: Kilojules.empty(),
+      servingSize: ServingSize.empty(),
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'Calories': calories.toJson(),
@@ -290,6 +378,14 @@ class Calories {
     return Calories(
       energyInterval: EnergyInterval.fromJson(json['EnergyInterval']),
       displayType: json['DisplayType'],
+    );
+  }
+
+  // Empty constructor
+  factory Calories.empty() {
+    return Calories(
+      energyInterval: EnergyInterval.empty(),
+      displayType: 0,
     );
   }
 
@@ -317,6 +413,14 @@ class Kilojules {
     );
   }
 
+  // Empty constructor
+  factory Kilojules.empty() {
+    return Kilojules(
+      energyInterval: EnergyInterval.empty(),
+      displayType: 0,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'EnergyInterval': energyInterval.toJson(),
@@ -338,6 +442,14 @@ class EnergyInterval {
     return EnergyInterval(
       lower: json['Lower'],
       upper: json['Upper'],
+    );
+  }
+
+  // Empty constructor
+  factory EnergyInterval.empty() {
+    return EnergyInterval(
+      lower: 0,
+      upper: 0,
     );
   }
 
@@ -371,6 +483,16 @@ class ServingSize {
     );
   }
 
+  // Empty constructor
+  factory ServingSize.empty() {
+    return ServingSize(
+      measurementType: '',
+      weightedInterval: WeightedInterval.empty(),
+      volumenInterval: VolumenInterval.empty(),
+      countInterval: CountInterval.empty(),
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'MeasurementType': measurementType,
@@ -394,6 +516,14 @@ class WeightedInterval {
     return WeightedInterval(
       interval: Interval.fromJson(json['Interval']),
       weight: Weight.fromJson(json['Weight']),
+    );
+  }
+
+  // Empty constructor
+  factory WeightedInterval.empty() {
+    return WeightedInterval(
+      interval: Interval.empty(),
+      weight: Weight.empty(),
     );
   }
 
@@ -421,6 +551,14 @@ class VolumenInterval {
     );
   }
 
+  // Empty constructor
+  factory VolumenInterval.empty() {
+    return VolumenInterval(
+      interval: Interval.empty(),
+      volume: Volume.empty(),
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'Interval': interval.toJson(),
@@ -442,6 +580,14 @@ class CountInterval {
     return CountInterval(
       interval: Interval.fromJson(json['Interval']),
       count: Count.fromJson(json['Count']),
+    );
+  }
+
+  // Empty constructor
+  factory CountInterval.empty() {
+    return CountInterval(
+      interval: Interval.empty(),
+      count: Count.empty(),
     );
   }
 
@@ -469,6 +615,14 @@ class Interval {
     );
   }
 
+  // Empty constructor
+  factory Interval.empty() {
+    return Interval(
+      lower: 0,
+      upper: 0,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'Lower': lower,
@@ -488,6 +642,11 @@ class Weight {
     return Weight(
       unitType: json['UnitType'],
     );
+  }
+
+  // Empty constructor
+  factory Weight.empty() {
+    return Weight(unitType: '');
   }
 
   Map<String, dynamic> toJson() {
@@ -510,6 +669,11 @@ class Volume {
     );
   }
 
+  // Empty constructor
+  factory Volume.empty() {
+    return Volume(unitType: '');
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'UnitType': unitType,
@@ -528,6 +692,11 @@ class Count {
     return Count(
       unitType: json['UnitType'],
     );
+  }
+
+  // Empty constructor
+  factory Count.empty() {
+    return Count(unitType: '');
   }
 
   Map<String, dynamic> toJson() {
@@ -554,6 +723,12 @@ class DishInfo {
   // Method to get only the Ingredients from the DishInfo object
   List<String> getIngredients() {
     return classifications.ingredients;
+  }
+
+  factory DishInfo.empty() {
+    return DishInfo(
+      classifications: Classifications.empty(), // Use the empty Classifications object
+    );
   }
 }
 
@@ -605,6 +780,23 @@ class Classifications {
     );
   }
 
+  factory Classifications.empty() {
+    return Classifications(
+      canServeAlone: false,
+      isVegetarian: false,
+      alcoholicItem: 0,
+      dietaryLabelInfo: [],
+      instructionsForUse: '',
+      ingredients: [],
+      additives: [],
+      preparationType: '',
+      foolBusinessOperator: FoolBusinessOperator.empty(),
+      isHighFatSaltSugar: false,
+      isHalal: false,
+      spiceLevel: 0,
+    );
+  }
+
   // Method to convert the Classifications object to a map
   Map<String, dynamic> toJson() {
     return {
@@ -648,6 +840,13 @@ class FoolBusinessOperator {
       'Address': address,
     };
   }
+
+  factory FoolBusinessOperator.empty() {
+    return FoolBusinessOperator(
+      name: '',
+      address: '',
+    );
+  }
 }
 
 class VisibilityInfo {
@@ -687,6 +886,17 @@ class MetaData {
       productName: json['ProductName'] ?? '',
       unitChartId: json['UnitChartID'] ?? '',
       unitChartName: json['UnitChartName'] ?? '',
+    );
+  }
+
+  factory MetaData.empty() {
+    return MetaData(
+      dealProductID: '', // Default to an empty string
+      isDealProduct: false, // Default to false
+      productId: '', // Default to an empty string
+      productName: '', // Default to an empty string
+      unitChartId: '', // Default to an empty string
+      unitChartName: '', // Default to an empty string
     );
   }
 }

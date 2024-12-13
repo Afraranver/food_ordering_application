@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_ordering_application/src/models/item_model.dart';
+import 'package:food_ordering_application/src/order_details/add_to_cart_page.dart';
+import 'package:food_ordering_application/src/order_details/dynamic_topping_ui.dart';
 import 'package:food_ordering_application/src/util/helper.dart';
 
 class OrderDetails extends StatelessWidget {
@@ -61,7 +63,7 @@ class OrderDetails extends StatelessWidget {
                               item.imageUrl, // Use the item's image
                               height: 200,
                               width: double.infinity,
-                              fit: BoxFit.cover,
+                              fit: BoxFit.contain,
                             ),
                           ),
                           const SizedBox(height: 16.0),
@@ -80,7 +82,8 @@ class OrderDetails extends StatelessWidget {
                                       fontWeight: FontWeight.w700,
                                       height: 36 / 32,
                                     ),
-                                    overflow: TextOverflow.ellipsis, // Add ellipsis when text overflows
+                                    overflow: TextOverflow
+                                        .ellipsis, // Add ellipsis when text overflows
                                     maxLines: 1,
                                   ),
                                   const SizedBox(height: 4.0),
@@ -192,7 +195,7 @@ class OrderDetails extends StatelessWidget {
                                       const SizedBox(height: 8.0),
                                       SizedBox(
                                         height:
-                                            250.0, // Adjust according to content
+                                            120.0, // Adjust according to content
                                         child: TabBarView(
                                           children: [
                                             Padding(
@@ -394,6 +397,25 @@ class OrderDetails extends StatelessWidget {
                                             ),
                                           ],
                                         ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                                SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height:
+                                            300, // Specify a fixed height if you want it to take up specific space
+                                        child: DynamicToppingUI(item: item),
+                                      ),
+                                      const SizedBox(height: 20),
+                                      // More widgets above AddToCartPage, you can add other widgets here as needed
+                                      const Padding(
+                                        padding:
+                                            EdgeInsets.only(bottom: 20),
+                                        child: AddToCartPage(),
                                       ),
                                     ],
                                   ),
