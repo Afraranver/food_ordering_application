@@ -1,3 +1,5 @@
+
+
 class Item {
   String id;
   String menuItemId;
@@ -13,6 +15,7 @@ class Item {
   TaxInfo taxInfo;
   List<String> categoryIds;
   MetaData metaData;
+  int totalReviews; // Add TotalReviews field
 
   Item({
     required this.id,
@@ -29,6 +32,7 @@ class Item {
     required this.taxInfo,
     required this.categoryIds,
     required this.metaData,
+    this.totalReviews = 0, // Default value set to 0
   });
 
   factory Item.fromJson(Map<String, dynamic> json) {
@@ -49,6 +53,7 @@ class Item {
           ? List<String>.from(json['CategoryIDs'])
           : [],
       metaData: MetaData.fromJson(json['MetaData']),
+      totalReviews: json['TotalReviews'] ?? 0, // Handle missing field with default value
     );
   }
 }

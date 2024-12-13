@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:food_ordering_application/src/home/menu_item_card.dart';
-import 'package:food_ordering_application/src/home/search_widget.dart';
 import 'package:food_ordering_application/src/util/appdata.dart';
 import 'package:food_ordering_application/src/util/helper.dart';
 

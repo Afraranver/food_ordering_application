@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_ordering_application/src/models/item_model.dart';
 import 'package:food_ordering_application/src/models/model.dart';
-import 'package:food_ordering_application/src/util/appdata.dart';
 import 'package:intl/intl.dart';
 
 
