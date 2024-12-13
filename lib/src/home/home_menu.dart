@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:food_ordering_application/src/home/menu_item_card.dart';
+import 'package:food_ordering_application/src/home/search_widget.dart';
 import 'package:food_ordering_application/src/util/appdata.dart';
 import 'package:food_ordering_application/src/util/helper.dart';
 
@@ -13,6 +14,16 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
+  bool _isSearchVisible = false;
+  final TextEditingController _searchController = TextEditingController();
+
+  void _onTapOutside() {
+    setState(() {
+      _searchController.clear(); // Clears the text in the TextField
+      _isSearchVisible = false; // Hides the search input field
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -42,7 +53,12 @@ class _MenuScreenState extends State<MenuScreen> {
 
       // Optionally pre-select the first category
       if (AppData().displayedCategories.isNotEmpty) {
-        AppData().selectedCategory = AppData().displayedCategories[0].title;
+        // AppData().selectedCategory = AppData().displayedCategories[0].title;
+        AppData().selectedCategory = AppData().displayedCategories.first.title;
+        AppData().filteredItems = getFilteredItems(
+          AppData().displayedCategories.first,
+          AppData().items,
+        );
       }
     });
   }
@@ -205,18 +221,54 @@ class _MenuScreenState extends State<MenuScreen> {
                     ),
                   ),
 
-                  // Search Icon
-                  GestureDetector(
-                    onTap: () {
-                      // Handle search icon tap
-                      log("Search Icon Tapped");
-                    },
-                    child: const Icon(
-                      Icons.search,
-                      size: 24,
-                      color: Colors.black,
-                    ),
-                  ),
+                  Row(
+                    children: [
+                      // Show the search icon
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _isSearchVisible =
+                                !_isSearchVisible; // Toggle search field visibility
+                          });
+                        },
+                        child: const Icon(
+                          Icons.search,
+                          size: 24,
+                          color: Colors.black,
+                        ),
+                      ),
+                      // Show the input field when _isSearchVisible is true
+                      if (_isSearchVisible)
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 8.0), // Small space between icon and input
+                          child: SizedBox(
+                            width: 150, // Adjust width of the input field
+                            child: TextField(
+                              controller: _searchController,
+                              autofocus: true,
+                              decoration: InputDecoration(
+                                hintText: "Search...",
+                                suffixIcon: IconButton(
+                                  icon: const Icon(Icons.clear),
+                                  onPressed: () {
+                                    setState(() {
+                                      _searchController
+                                          .clear(); // Clear the search text
+                                      _isSearchVisible =
+                                          false; // Hide the input field
+                                    });
+                                  },
+                                ),
+                              ),
+                              onSubmitted: (query) {
+                                log("Searching for: $query"); // Perform search or handle the input
+                              },
+                            ),
+                          ),
+                        ),
+                    ],
+                  )
                 ],
               ),
             ),
@@ -228,72 +280,75 @@ class _MenuScreenState extends State<MenuScreen> {
                 child: SingleChildScrollView(
                   scrollDirection:
                       Axis.horizontal, // Make the tabs horizontally scrollable
-                  child: Row(
-                    mainAxisAlignment:
-                        MainAxisAlignment.start, // Align tabs to the left
-                    children: AppData().displayedCategories.map((category) {
-                      bool isCategorySelected =
-                          AppData().selectedCategory == category.title;
+                  child: Container(
+                    alignment:
+                        Alignment.centerLeft, // Align content to the left
+                    child: Row(
+                      children: AppData().displayedCategories.map((category) {
+                        bool isCategorySelected =
+                            AppData().selectedCategory == category.title;
 
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            AppData().selectedCategory = category.title;
-                          });
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(
-                              right: 12), // Space between tabs
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 6,
-                              horizontal:
-                                  12), // Reduced padding for smaller size
-                          decoration: BoxDecoration(
-                            color: isCategorySelected
-                                ? Colors.green
-                                : Colors.transparent,
-                            borderRadius: BorderRadius.circular(40),
-                            border: Border.all(
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              AppData().selectedCategory = category.title;
+                              AppData().filteredItems = getFilteredItems(
+                                category,
+                                AppData().items,
+                              );
+                            });
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(
+                                right: 12), // Space between tabs
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 6,
+                                horizontal:
+                                    12), // Reduced padding for smaller size
+                            decoration: BoxDecoration(
                               color: isCategorySelected
                                   ? Colors.green
-                                  : Colors.grey.shade300,
-                              width: isCategorySelected ? 2 : 1,
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(40),
+                              border: Border.all(
+                                color: isCategorySelected
+                                    ? Colors.green
+                                    : Colors.grey.shade300,
+                                width: isCategorySelected ? 2 : 1,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                // Category title with smaller font size
+                                Text(
+                                  category.title,
+                                  style: TextStyle(
+                                    color: isCategorySelected
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 12, // Smaller font size
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                // If the category is selected, show the 'X' icon to deselect it
+                                if (isCategorySelected)
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.close,
+                                      color: Colors.white,
+                                      size: 16,
+                                    ),
+                                    onPressed: () {
+                                      // Handle deselecting logic
+                                    },
+                                  ),
+                              ],
                             ),
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              // Category title with smaller font size
-                              Text(
-                                category.title,
-                                style: TextStyle(
-                                  color: isCategorySelected
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontSize: 12, // Smaller font size
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              // If the category is selected, show the 'X' icon to deselect it
-                              if (isCategorySelected)
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.close,
-                                    color: Colors.white,
-                                    size: 16,
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      AppData().selectedCategory =
-                                          ''; // Deselect the category
-                                    });
-                                  },
-                                ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }).toList(),
+                        );
+                      }).toList(),
+                    ),
                   ),
                 ),
               ),
@@ -302,18 +357,73 @@ class _MenuScreenState extends State<MenuScreen> {
                 padding: EdgeInsets.all(20),
                 child: Text("No categories available."),
               ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                children: AppData().filteredItems.map((item) {
+                  return MenuItemCard(
+                    item: item,
+                  );
+                }).toList(),
+              ),
+            ),
 
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: Column(
-                children: List.generate(menuItems.length, (index) {
-                  return MenuItemCard(
-                    item: menuItems[
-                        index], // Use the actual item data from the menuItems list
-                  );
-                }),
+                children: [
+                  // Basket Summary Button with margin on left and right
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 16), // Margin added
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    decoration: BoxDecoration(
+                      color: const Color(
+                          0xFF1CAE81), // Green color for basket summary
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: const Text(
+                      "Basket • 3 items • £24.00",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'Urbanist',
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        height: 36 / 32,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16), // Space between buttons
+                  // View Basket Button with margin on left and right
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 16), // Margin added
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    decoration: BoxDecoration(
+                      color: const Color(
+                          0xFFF4F6F9), // Light grey background for "View Basket"
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(
+                          color: const Color(0xFF1CAE81)), // Green border
+                    ),
+                    child: const Text(
+                      "View Basket",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'Urbanist',
+                        color: Color(0xFF1CAE81),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        height: 36 / 32,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
+            )
           ],
         ),
       ),
@@ -394,6 +504,7 @@ class _MenuScreenState extends State<MenuScreen> {
                             AppData().selectedMenu =
                                 menuItem.title; // Update selected menu
                             filterCategoriesForMenu(AppData().selectedMenu);
+                            // AppData().filteredItems = getFilteredItems(AppData().selectedCategory, AppData().items);
                           });
                           Navigator.pop(context); // Close the bottom sheet
                         },
@@ -503,52 +614,4 @@ class _MenuScreenState extends State<MenuScreen> {
       },
     );
   }
-
-  final List<MenuItem> menuItems = [
-    MenuItem(
-      imageUrl: 'https://example.com/burger.jpg',
-      title: 'Classic Beef Burger',
-      description: 'Our all time BBQ favorite',
-      price: 12.90,
-      promotions: '2 Promotions Available',
-    ),
-    MenuItem(
-      imageUrl: 'https://example.com/hotdog.jpg',
-      title: 'Bacon Wrapped Hotdog',
-      description: 'Our all time favorite',
-      price: 8.90,
-      promotions: '',
-    ),
-        MenuItem(
-      imageUrl: 'https://example.com/burger.jpg',
-      title: 'Classic Beef Burger',
-      description: 'Our all time BBQ favorite',
-      price: 12.90,
-      promotions: '2 Promotions Available',
-    ),
-    MenuItem(
-      imageUrl: 'https://example.com/hotdog.jpg',
-      title: 'Bacon Wrapped Hotdog',
-      description: 'Our all time favorite',
-      price: 8.90,
-      promotions: '',
-    ),
-    // Add more items as needed
-  ];
-}
-
-class MenuItem {
-  final String imageUrl;
-  final String title;
-  final String description;
-  final double price;
-  final String promotions;
-
-  MenuItem({
-    required this.imageUrl,
-    required this.title,
-    required this.description,
-    required this.price,
-    required this.promotions,
-  });
 }

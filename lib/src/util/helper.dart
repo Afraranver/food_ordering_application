@@ -1,5 +1,7 @@
-
 import 'package:flutter/material.dart';
+import 'package:food_ordering_application/src/models/item_model.dart';
+import 'package:food_ordering_application/src/models/model.dart';
+import 'package:food_ordering_application/src/util/appdata.dart';
 import 'package:intl/intl.dart';
 
 
@@ -58,4 +60,17 @@ class IconTab extends StatelessWidget {
       ),
     );
   }
+}
+
+List<Item> getFilteredItems(Category category, List<Item> items) {
+  // Extract MenuEntities IDs from the selected category
+  List<String> menuEntityIds = category.menuEntities
+      .where((entity) => entity.type == "ITEM") // Ensure it's of type ITEM
+      .map((entity) => entity.id)
+      .toList();
+
+  // Find matching items from the provided items list
+  return items.where((item) {
+    return menuEntityIds.contains(item.menuItemId);
+  }).toList();
 }

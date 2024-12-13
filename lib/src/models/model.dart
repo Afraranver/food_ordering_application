@@ -1,10 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/services.dart';
-import 'package:food_ordering_application/src/models/item.dart';
-import 'package:food_ordering_application/src/util/appdata.dart';
-
-// Model classes (Add your Menu, Category, and related models here)
+import 'package:food_ordering_application/src/models/item_model.dart';
 
 class Menu {
   String id;

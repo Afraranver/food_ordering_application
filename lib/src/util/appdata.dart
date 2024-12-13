@@ -1,4 +1,4 @@
-import 'package:food_ordering_application/src/models/item.dart';
+import 'package:food_ordering_application/src/models/item_model.dart';
 import 'package:food_ordering_application/src/models/model.dart';
 import 'dart:developer';
 import 'dart:io';
@@ -19,6 +19,7 @@ class AppData {
   TimeRange? todayTimeRange;
   List<Category> displayedCategories = [];
   String selectedCategory = "";
+  List<Item> filteredItems = [];
   bool _isLoaded = false;
 
   Future<void> loadData() async {

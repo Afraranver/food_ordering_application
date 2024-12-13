@@ -32,6 +32,8 @@ flutter:
     - family: Urbanist
       fonts:
         - asset: assets/fonts/Urbanist_VariableFont_wght.ttf
+        - asset: assets/fonts/Quicksand_VariableFont_wght.ttf
+        - asset: assets/fonts/DMSans_VariableFont_opsz_wght.ttf
 
   assets:
     # Add assets from the images directory to the application.
