@@ -15,19 +15,19 @@ class MenuScreen extends StatefulWidget {
 class _MenuScreenState extends State<MenuScreen> {
   bool _isSearchVisible = false;
   final TextEditingController _searchController = TextEditingController();
-
-  void _onTapOutside() {
-    setState(() {
-      _searchController.clear(); // Clears the text in the TextField
-      _isSearchVisible = false; // Hides the search input field
-    });
-  }
+ int _selectedIndex = 1;
 
   @override
   void initState() {
     super.initState();
     // Ensure that the data is loaded before continuing
     _initializeData();
+  }
+
+  void _onIconTap(int index) {
+    setState(() {
+      _selectedIndex = index; // Update selected index
+    });
   }
 
   Future<void> _initializeData() async {
@@ -383,7 +383,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                     child: const Text(
-                      "Basket • 3 items • £24.00",
+                      "Basket • 3 items • Rs 1024.00",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontFamily: 'Urbanist',

@@ -405,16 +405,16 @@ class OrderDetails extends StatelessWidget {
                                 SingleChildScrollView(
                                   child: Column(
                                     children: [
-                                      SizedBox(
-                                        height:
-                                            300, // Specify a fixed height if you want it to take up specific space
-                                        child: DynamicToppingUI(item: item),
-                                      ),
+                                      if (hasContentToShow(
+                                          item)) 
+                                        SizedBox(
+                                          height:
+                                              300, 
+                                          child: DynamicToppingUI(item: item),
+                                        ),
                                       const SizedBox(height: 20),
-                                      // More widgets above AddToCartPage, you can add other widgets here as needed
                                       const Padding(
-                                        padding:
-                                            EdgeInsets.only(bottom: 20),
+                                        padding: EdgeInsets.only(bottom: 20),
                                         child: AddToCartPage(),
                                       ),
                                     ],

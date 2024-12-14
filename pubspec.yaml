@@ -46,4 +46,6 @@ flutter:
     - assets/images/delivery_scooter.png
     - assets/images/location.png
     - assets/images/star.png
+    - assets/images/scooter.png
+    - assets/images/scooter_select.png
 

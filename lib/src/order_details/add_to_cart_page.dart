@@ -93,7 +93,7 @@ class _AddToCartPageState extends State<AddToCartPage> {
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               ),
               child: const Text(
-                'Add to Cart Rs 1260',
+                'Add to Cart',
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   color: Colors.white,

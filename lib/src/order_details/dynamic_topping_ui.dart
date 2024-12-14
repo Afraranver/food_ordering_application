@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:food_ordering_application/src/models/item_model.dart';
 import 'package:food_ordering_application/src/models/modifiergroup_model.dart';
 import 'package:food_ordering_application/src/util/appdata.dart';
+import 'package:food_ordering_application/src/util/helper.dart';
 
 class DynamicToppingUI extends StatefulWidget {
   final Item item;
@@ -16,12 +17,6 @@ class DynamicToppingUI extends StatefulWidget {
 class _DynamicToppingUIState extends State<DynamicToppingUI> {
   Map<String, int> itemQuantities = {};
   List<Item> filteredItems = [];
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   log('Received item: ${widget.item.title}');
-  //   filterAndPrepareData(widget.item);
-  // }
 
   void filterAndPrepareData() {
     // Log the received item title for debugging
@@ -30,8 +25,8 @@ class _DynamicToppingUIState extends State<DynamicToppingUI> {
     // Clear the list to avoid duplication
     filteredItems.clear();
 
-    // Check if the item has modifierGroupRules with IDs
-    if (widget.item.modifierGroupRules.ids != null) {
+    // Check if the item has modifierGroupRules with IDs using hasContentToShow
+    if (hasContentToShow(widget.item)) {
       // Loop through ModifierGroupRules IDs
       for (var modifierGroupID in widget.item.modifierGroupRules.ids!) {
         // Find the ModifierGroup by its ID
@@ -61,6 +56,8 @@ class _DynamicToppingUIState extends State<DynamicToppingUI> {
           log("Quantity: Min ${itemDetails.quantityInfo.quantity.minPermitted}, Max ${itemDetails.quantityInfo.quantity.maxPermitted}");
         }
       }
+    } else {
+      log("No content to show for item: ${widget.item.title}");
     }
   }
 

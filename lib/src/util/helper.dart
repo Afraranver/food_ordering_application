@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:food_ordering_application/src/models/category_model.dart';
 import 'package:food_ordering_application/src/models/item_model.dart';
@@ -101,6 +103,42 @@ class NutrientColumn extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+bool hasContentToShow(Item item) {
+  bool hasContent = item.modifierGroupRules.ids != null &&
+      item.modifierGroupRules.ids!.any((id) => id.isNotEmpty);
+
+  // Log the evaluation result for debugging
+  if (hasContent) {
+    log("Item ${item.title} has content to show.");
+  } else {
+    log("Item ${item.title} does not have content to show.");
+  }
+
+  return hasContent;
+}
+
+class IconTabHome extends StatelessWidget {
+  final String unselectedAssetPath;
+  final String selectedAssetPath;
+  final bool isSelectedIcon;
+
+  const IconTabHome({
+    required this.unselectedAssetPath,
+    required this.selectedAssetPath,
+    required this.isSelectedIcon,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      isSelectedIcon ? selectedAssetPath : unselectedAssetPath,
+      width: 24,
+      height: 24,
     );
   }
 }
