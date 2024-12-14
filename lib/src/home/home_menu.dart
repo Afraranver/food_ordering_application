@@ -15,7 +15,6 @@ class MenuScreen extends StatefulWidget {
 class _MenuScreenState extends State<MenuScreen> {
   bool _isSearchVisible = false;
   final TextEditingController _searchController = TextEditingController();
- int _selectedIndex = 1;
 
   @override
   void initState() {
@@ -24,11 +23,6 @@ class _MenuScreenState extends State<MenuScreen> {
     _initializeData();
   }
 
-  void _onIconTap(int index) {
-    setState(() {
-      _selectedIndex = index; // Update selected index
-    });
-  }
 
   Future<void> _initializeData() async {
     // Wait for data to load

@@ -409,7 +409,7 @@ class OrderDetails extends StatelessWidget {
                                           item)) 
                                         SizedBox(
                                           height:
-                                              300, 
+                                              200, 
                                           child: DynamicToppingUI(item: item),
                                         ),
                                       const SizedBox(height: 20),

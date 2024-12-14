@@ -35,24 +35,19 @@ class AppData {
     modifierGroups = await loader.loadModifierGroups();
     _isLoaded = true;
 
-    // Get today's day (e.g., 'Monday', 'Tuesday', etc.)
     today = DateFormat('EEEE').format(DateTime.now());
 
     if (menus.isNotEmpty) {
       selectedMenu = menus.first.title;
 
-      // Get the time range for today's day from the menu's availability
       for (var menuItem in menus) {
-        // Access the menuAvailability for today
         todayTimeRange = menuItem.menuAvailability[today];
 
-        // You can now use todayTimeRange for displaying time range for today's menu item
         if (todayTimeRange != null) {
           log('Menu: ${menuItem.title}');
           log('Available today: ${todayTimeRange?.startTime} - ${todayTimeRange?.endTime}');
         }
       }
-
     }
 
     try {

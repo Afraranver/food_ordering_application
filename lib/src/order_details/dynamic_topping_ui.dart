@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:food_ordering_application/src/models/item_model.dart';
 import 'package:food_ordering_application/src/models/modifiergroup_model.dart';
@@ -19,38 +18,28 @@ class _DynamicToppingUIState extends State<DynamicToppingUI> {
   List<Item> filteredItems = [];
 
   void filterAndPrepareData() {
-    // Log the received item title for debugging
     log('Received item: ${widget.item.title}');
 
-    // Clear the list to avoid duplication
     filteredItems.clear();
 
-    // Check if the item has modifierGroupRules with IDs using hasContentToShow
     if (hasContentToShow(widget.item)) {
-      // Loop through ModifierGroupRules IDs
       for (var modifierGroupID in widget.item.modifierGroupRules.ids!) {
-        // Find the ModifierGroup by its ID
         var group = AppData().modifierGroups.firstWhere(
               (group) => group.modifierGroupID == modifierGroupID,
               orElse: () => ModifierGroup.empty(),
             );
 
-        // Collect ModifierOption IDs from the ModifierGroup
         List<String> modifierOptionIds =
             group.modifierOptions.map((option) => option.id).toList();
 
-        // Loop through ModifierOption IDs to fetch details of associated items
         for (var optionId in modifierOptionIds) {
-          // Find the item by ID in the list
           var itemDetails = AppData().items.firstWhere(
                 (item) => item.menuItemId == optionId,
-                orElse: () => defaultItem, // Default item if not found
+                orElse: () => defaultItem,
               );
 
-          // Add the valid item to the filteredItems list
           filteredItems.add(itemDetails);
 
-          // Optional: Log details of the found item
           log("Item Title: ${itemDetails.title}");
           log("Price: ${itemDetails.priceInfo.price}");
           log("Quantity: Min ${itemDetails.quantityInfo.quantity.minPermitted}, Max ${itemDetails.quantityInfo.quantity.maxPermitted}");
@@ -61,14 +50,12 @@ class _DynamicToppingUIState extends State<DynamicToppingUI> {
     }
   }
 
-  // Function to increment the quantity of an item
   void incrementQuantity(String itemId) {
     setState(() {
       itemQuantities[itemId] = (itemQuantities[itemId] ?? 0) + 1;
     });
   }
 
-  // Function to decrement the quantity of an item
   void decrementQuantity(String itemId) {
     setState(() {
       if (itemQuantities[itemId]! > 0) {
@@ -79,11 +66,11 @@ class _DynamicToppingUIState extends State<DynamicToppingUI> {
 
   @override
   Widget build(BuildContext context) {
-    // Prepare and filter data before rendering the UI
     filterAndPrepareData();
 
     return Scaffold(
       appBar: null,
+      backgroundColor: Colors.white,
       body: ListView.builder(
         padding: const EdgeInsets.all(16.0),
         itemCount: filteredItems.length,
@@ -92,8 +79,6 @@ class _DynamicToppingUIState extends State<DynamicToppingUI> {
 
           // Collect price and quantity values
           var price = item.priceInfo.price.pickupPrice;
-          var minQuantity = item.quantityInfo.quantity.minPermitted;
-          var maxQuantity = item.quantityInfo.quantity.maxPermitted;
 
           // Store the quantity for the item (if it's the first time, set to 0)
           itemQuantities.putIfAbsent(item.id, () => 0);
@@ -103,7 +88,16 @@ class _DynamicToppingUIState extends State<DynamicToppingUI> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(item.title, style: const TextStyle(fontSize: 16)),
+                Text(
+                  item.title,
+                  style: const TextStyle(
+                    fontFamily: 'Plus Jakarta Sans',
+                    color: Color(0xFF171725),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    height: 36 / 32,
+                  ),
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -112,29 +106,74 @@ class _DynamicToppingUIState extends State<DynamicToppingUI> {
                       "Price: Rs $price",
                       style: const TextStyle(fontSize: 12),
                     ),
-                    // Quantity Information
-                    Text(
-                      "Min: $minQuantity / Max: $maxQuantity",
-                      style: const TextStyle(fontSize: 12),
-                    ),
                   ],
                 ),
                 Row(
                   children: [
                     // Decrement Quantity Button
-                    IconButton(
-                      onPressed: () => decrementQuantity(item.id),
-                      icon: const Icon(Icons.remove, color: Colors.green),
+                    GestureDetector(
+                      onTap: () => decrementQuantity(item.id),
+                      child: Container(
+                        padding: const EdgeInsets.all(1.0),
+                        decoration: BoxDecoration(
+                          color: _isDecrementPressed(itemQuantities, item.id)
+                              ? Colors.green
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: _isDecrementPressed(itemQuantities, item.id)
+                                ? Colors.green
+                                : Colors.black,
+                            width: 2,
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.remove,
+                          color: _isDecrementPressed(itemQuantities, item.id)
+                              ? Colors.white
+                              : Colors.black,
+                          size: 20, // Change icon color when pressed
+                        ),
+                      ),
                     ),
+                    // Add space between Decrement button and Quantity text
+                    const SizedBox(
+                        width: 10), // Adjust this value to your desired space
+
                     // Display current quantity
                     Text(
                       itemQuantities[item.id].toString().padLeft(2, '0'),
                       style: const TextStyle(fontSize: 16),
                     ),
+                    // Add space between Quantity text and Increment button
+                    const SizedBox(
+                        width: 10), // Adjust this value to your desired space
+
                     // Increment Quantity Button
-                    IconButton(
-                      onPressed: () => incrementQuantity(item.id),
-                      icon: const Icon(Icons.add, color: Colors.green),
+                    GestureDetector(
+                      onTap: () => incrementQuantity(item.id),
+                      child: Container(
+                        padding: const EdgeInsets.all(1.0),
+                        decoration: BoxDecoration(
+                          color: _isIncrementPressed(itemQuantities, item.id)
+                              ? Colors.green
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: _isIncrementPressed(itemQuantities, item.id)
+                                ? Colors.green
+                                : Colors.black,
+                            width: 2,
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.add,
+                          color: _isIncrementPressed(itemQuantities, item.id)
+                              ? Colors.white
+                              : Colors.black,
+                          size: 20, // Change icon color when pressed
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -145,4 +184,12 @@ class _DynamicToppingUIState extends State<DynamicToppingUI> {
       ),
     );
   }
+}
+
+bool _isDecrementPressed(Map<String, int> itemQuantities, String itemId) {
+  return itemQuantities[itemId]! > 0;
+}
+
+bool _isIncrementPressed(Map<String, int> itemQuantities, String itemId) {
+  return itemQuantities[itemId]! < 100;
 }
