@@ -1,98 +1,85 @@
-Flutter Food Ordering Application
-This is a Flutter application designed to run on multiple platforms. Below are the instructions to set up and run the project, focusing on Android development.
+# Flutter Food Ordering Application
 
-Prerequisites
-Flutter SDK: Install the Flutter SDK from the official website.
-Flutter Installation Guide
+This is a Flutter application designed for a food ordering system that runs on multiple platforms. Below are the instructions to set up and run the project, focusing on Android development.
 
-Android Studio: Install Android Studio for Android development.
-Android Studio Download
+---
 
-Java Development Kit (JDK): Make sure the JDK is installed. Android Studio typically includes it, but you can also download it separately.
+## 📋 Prerequisites
 
-Device or Emulator:
+Before you get started, ensure you have the following installed:
 
-Connect a physical Android device via USB with developer mode enabled.
-Or, set up an Android emulator in Android Studio.
-Environment Variables:
+1. **Flutter SDK**  
+   Install the Flutter SDK from the official [Flutter Installation Guide](https://docs.flutter.dev/get-started/install).
 
-Add flutter to your system’s PATH so you can run Flutter commands from any directory.
-Ensure the Android SDK is set up in Android Studio.
-Steps to Run the Project
-1. Clone the Repository
-If you haven’t already, clone the repository to your local machine:
+2. **Android Studio**  
+   Install Android Studio for Android development.  
+   [Download Android Studio](https://developer.android.com/studio)
 
-bash
-Copy code
-git clone <repository-url>
-cd <repository-folder>
-2. Install Dependencies
-Ensure you have all the required packages:
+3. **Java Development Kit (JDK)**  
+   Ensure the JDK is installed. Android Studio typically includes it, but you can also download it separately from [Oracle JDK](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html).
 
-bash
-Copy code
-flutter pub get
-3. Connect a Device or Emulator
-Physical Device:
-Connect your Android device via USB.
-Enable USB Debugging from Developer Options.
-Run the command below to check if your device is recognized:
-bash
-Copy code
-flutter devices
-Emulator:
-Open Android Studio, create an Android Virtual Device (AVD), and start it.
-4. Check the Flutter Environment
-Ensure Flutter is correctly set up by running:
+4. **Device or Emulator**  
+   - Connect a physical Android device via USB with *Developer Mode* enabled.  
+   - Or, set up an Android emulator in Android Studio.
 
-bash
-Copy code
-flutter doctor
-This will display any missing dependencies or issues. Fix any problems listed.
+5. **Environment Variables**  
+   - Add `flutter` to your system’s PATH to run Flutter commands from any directory.
+   - Ensure the Android SDK is properly configured in Android Studio.
 
-5. Run the Application
-To start the app on an Android device/emulator, run:
+---
 
-bash
-Copy code
-flutter run
-This will build and launch the app on the connected Android device or emulator.
+## 🚀 Steps to Run the Project
 
-Debugging the Application
-Open the project in Android Studio or VS Code.
-Use the integrated terminal or debug tools to troubleshoot issues.
-For live debugging, use:
-bash
-Copy code
-flutter run --debug
-Building a Release APK
-To generate a release APK for distribution, run:
+Follow the steps below to set up and run the application on Android:
 
-bash
-Copy code
-flutter build apk --release
-The APK file will be located in the build/app/outputs/flutter-apk/ directory.
+## 1️⃣ Clone the Repository
+Clone the repository to your local machine:
 
-Common Issues and Fixes
-Device Not Found:
+**git clone https://github.com/Afraranver/food_ordering_application.git**
 
-Ensure the device is connected and recognized by running flutter devices.
-Restart adb using:
-bash
-Copy code
-adb kill-server
-adb start-server
-Gradle Errors:
+**cd food_ordering_application**
 
-Ensure your Android SDK is up-to-date.
-Run:
-bash
-Copy code
-flutter clean
-flutter pub get
-Emulator Performance:
+## 2️⃣ Install Dependencies
+Download and set up all necessary Flutter packages by running:
 
-Use an emulator with hardware acceleration (HAXM or KVM for Linux).
-For additional help, visit the Flutter Documentation.
+**flutter pub get**
 
-Enjoy coding! 🚀
+This ensures that all required dependencies for the project are installed.
+
+## 3️⃣ Set Up a Device or Emulator
+📱 Using a Physical Device
+Connect your Android device to your computer via USB.
+Enable USB Debugging in the device's Developer Options.
+Verify the device is detected by running:
+
+
+**flutter devices**
+
+💻 Using an Emulator
+Open Android Studio.
+Navigate to Tools > Device Manager and create a new Android Virtual Device (AVD).
+Start the emulator from the Device Manager.
+
+## 4️⃣ Verify the Flutter Environment
+Run the following command to ensure your Flutter setup is correct:
+
+**flutter doctor**
+
+This will display any missing dependencies or configuration issues. Make sure to resolve any errors before proceeding.
+
+## 5️⃣ Launch the Application
+Start the application by running:
+
+**flutter run**
+
+This will build and launch the app on the connected Android device or emulator. You should now see the application running! 🎉
+
+## 💡 Additional Notes
+Debugging Mode: Use the following command during development for a better debugging experience:
+
+**flutter run --debug**
+Release APK: To build a release APK, run:
+
+**flutter build apk --release**
+The APK will be located in the build/app/outputs/flutter-apk/ directory.
+
