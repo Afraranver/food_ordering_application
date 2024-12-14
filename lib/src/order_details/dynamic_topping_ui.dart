@@ -18,8 +18,6 @@ class _DynamicToppingUIState extends State<DynamicToppingUI> {
   List<Item> filteredItems = [];
 
   void filterAndPrepareData() {
-    log('Received item: ${widget.item.title}');
-
     filteredItems.clear();
 
     if (hasContentToShow(widget.item)) {
@@ -39,10 +37,6 @@ class _DynamicToppingUIState extends State<DynamicToppingUI> {
               );
 
           filteredItems.add(itemDetails);
-
-          log("Item Title: ${itemDetails.title}");
-          log("Price: ${itemDetails.priceInfo.price}");
-          log("Quantity: Min ${itemDetails.quantityInfo.quantity.minPermitted}, Max ${itemDetails.quantityInfo.quantity.maxPermitted}");
         }
       }
     } else {

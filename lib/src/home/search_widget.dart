@@ -10,7 +10,8 @@ class SearchWidget extends StatefulWidget {
 
 class _SearchWidgetState extends State<SearchWidget> {
   bool _isSearchVisible = false; // To control visibility of the search field
-  final TextEditingController _searchController = TextEditingController(); // Controller for the TextField
+  final TextEditingController _searchController =
+      TextEditingController(); // Controller for the TextField
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,8 @@ class _SearchWidgetState extends State<SearchWidget> {
             GestureDetector(
               onTap: () {
                 setState(() {
-                  _isSearchVisible = !_isSearchVisible; // Toggle the search field visibility
+                  _isSearchVisible =
+                      !_isSearchVisible; // Toggle the search field visibility
                 });
               },
               child: const Icon(

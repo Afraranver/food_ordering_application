@@ -405,11 +405,9 @@ class OrderDetails extends StatelessWidget {
                                 SingleChildScrollView(
                                   child: Column(
                                     children: [
-                                      if (hasContentToShow(
-                                          item)) 
+                                      if (hasContentToShow(item))
                                         SizedBox(
-                                          height:
-                                              200, 
+                                          height: 200,
                                           child: DynamicToppingUI(item: item),
                                         ),
                                       const SizedBox(height: 20),

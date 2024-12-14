@@ -62,7 +62,6 @@ class JSONLoader {
   }
 
   Future<String> _readFile() async {
-    log('Reading asset file: $filePath', name: 'JSONLoader');
     try {
       return await rootBundle.loadString(filePath);
     } catch (e) {

@@ -23,7 +23,6 @@ class _MenuScreenState extends State<MenuScreen> {
     _initializeData();
   }
 
-
   Future<void> _initializeData() async {
     // Wait for data to load
     await AppData().loadData();

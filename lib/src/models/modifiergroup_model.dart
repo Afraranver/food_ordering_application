@@ -1,4 +1,3 @@
-
 class ModifierGroup {
   final String id;
   final String modifierGroupID;
@@ -37,8 +36,8 @@ class ModifierGroup {
       modifierOptions: (json['ModifierOptions'] as List)
           .map((option) => ModifierOption.fromJson(option))
           .toList(),
-      quantityConstraintsRules: QuantityConstraintsRules.fromJson(
-          json['QuantityConstraintsRules']),
+      quantityConstraintsRules:
+          QuantityConstraintsRules.fromJson(json['QuantityConstraintsRules']),
       createdDate: DateTime.parse(json['CreatedDate']),
       modifiedDate: DateTime.parse(json['ModifiedDate']),
       metaData: json['MetaData'],
@@ -53,7 +52,8 @@ class ModifierGroup {
       'Description': description.toJson(),
       'StoreID': storeID,
       'DisplayType': displayType,
-      'ModifierOptions': modifierOptions.map((option) => option.toJson()).toList(),
+      'ModifierOptions':
+          modifierOptions.map((option) => option.toJson()).toList(),
       'QuantityConstraintsRules': quantityConstraintsRules.toJson(),
       'CreatedDate': createdDate.toIso8601String(),
       'ModifiedDate': modifiedDate.toIso8601String(),
@@ -66,11 +66,13 @@ class ModifierGroup {
       id: '',
       modifierGroupID: '',
       title: Title.empty(), // Assuming you have an empty method for Title
-      description: Description.empty(), // Assuming you have an empty method for Description
+      description: Description
+          .empty(), // Assuming you have an empty method for Description
       storeID: '',
       displayType: '',
       modifierOptions: [],
-      quantityConstraintsRules: QuantityConstraintsRules.empty(), // Assuming you have an empty method for QuantityConstraintsRules
+      quantityConstraintsRules: QuantityConstraintsRules
+          .empty(), // Assuming you have an empty method for QuantityConstraintsRules
       createdDate: DateTime.now(),
       modifiedDate: DateTime.now(),
       metaData: null,
@@ -136,8 +138,8 @@ class ModifierOption {
 
   factory ModifierOption.empty() {
     return ModifierOption(
-      id: '',    // Default empty value for id
-      type: '',  // Default empty value for type
+      id: '', // Default empty value for id
+      type: '', // Default empty value for type
     );
   }
 }
@@ -164,8 +166,8 @@ class QuantityConstraintsRules {
 
   factory QuantityConstraintsRules.empty() {
     return QuantityConstraintsRules(
-      quantity: Quantity.empty(),  // Using the empty constructor of Quantity
-      overrides: null,  // Default value for overrides is null
+      quantity: Quantity.empty(), // Using the empty constructor of Quantity
+      overrides: null, // Default value for overrides is null
     );
   }
 }
